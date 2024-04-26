@@ -1,5 +1,5 @@
 # Specify the distinguished name of the OU below which you want to delete user profiles
-$targetOU = "OU=TargetOU,DC=YourDomain,DC=com"
+$targetOU = "OU=Districts,DC=apps,DC=clackesd,DC=k12,DC=or,DC=us"
 
 # Import the Active Directory module
 Import-Module ActiveDirectory
@@ -21,6 +21,9 @@ foreach ($profile in $profiles) {
     # If the profile is not loaded (user logged off), delete it
     if (-not $loaded) {
         Write-Host "Deleting profile: $($profile.LocalPath)"
-        Remove-WmiObject -InputObject $profile -WhatIf # Use -WhatIf to simulate, remove it to perform actual deletion
+        #Remove-WmiObject -InputObject $profile -WhatIf # Use -WhatIf to simulate, remove it to perform actual deletion
+        }
+    else {
+        Write-Host "Not Deleting profile: $($profile.LocalPath) logged in!"
+        }
     }
-}

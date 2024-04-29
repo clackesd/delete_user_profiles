@@ -12,18 +12,18 @@ $profiles = Get-WmiObject Win32_UserProfile | Where-Object { $_.Special -eq $fal
         $_
     }
 }
-
 # Iterate through each profile below the specified OU
-foreach ($profile in $profiles) {
-    # Check if the profile is loaded (i.e., the user is logged in)
-    $loaded = Test-Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\$($profile.LocalPath.Split('\')[1])"
 
-    # If the profile is not loaded (user logged off), delete it
-    if (-not $loaded) {
+foreach ($profile in $profiles) {
+    # Check if the user is logged in
+    $loggedIn = quser /server:YourTerminalServer | Where-Object { $_ -match $profile.LocalPath.Split('\')[1] }
+
+    # If the user is not logged in, delete the profile
+    if (-not $loggedIn) {
         Write-Host "Deleting profile: $($profile.LocalPath)"
         #Remove-WmiObject -InputObject $profile -WhatIf # Use -WhatIf to simulate, remove it to perform actual deletion
         }
     else {
         Write-Host "Not Deleting profile: $($profile.LocalPath) logged in!"
         }
-    }
+

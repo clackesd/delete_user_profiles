@@ -23,8 +23,8 @@ foreach ($profile in $profiles) {
     # If the user is not logged in, delete the profile
     
     if (-not $loggedIn) {
-        Write-Host "Would be deleting profile: $($profile.LocalPath)"
-        #Remove-WmiObject -InputObject $profile -WhatIf # Use -WhatIf to simulate, remove it to perform actual deletion
+        #Write-Host "Would be deleting profile: $($profile.LocalPath)"
+        Remove-WmiObject -InputObject $profile -WhatIf # Use -WhatIf to simulate, remove it to perform actual deletion
         }
     else {
         Write-Host "Not Deleting profile: $($profile.LocalPath) logged in!"
